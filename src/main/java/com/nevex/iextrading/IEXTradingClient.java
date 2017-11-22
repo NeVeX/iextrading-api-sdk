@@ -2,7 +2,7 @@ package com.nevex.iextrading;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nevex.iextrading.reference.stock.ReferenceSymbolsClient;
+import com.nevex.iextrading.reference.stock.ReferenceDataClient;
 import okhttp3.OkHttpClient;
 
 /**
@@ -10,8 +10,7 @@ import okhttp3.OkHttpClient;
  */
 public final class IEXTradingClient {
 
-    public final static String BASE_URL = "https://api.iextrading.com/1.0";
-    private final ReferenceSymbolsClient referenceSymbolsClient;
+    private final ReferenceDataClient referenceDataClient;
 
     public IEXTradingClient() {
         OkHttpClient okHttpClient = new OkHttpClient(); // default for now
@@ -20,11 +19,11 @@ public final class IEXTradingClient {
         objectMapper.findAndRegisterModules();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        referenceSymbolsClient = new ReferenceSymbolsClient(okHttpClient, objectMapper);
+        referenceDataClient = new ReferenceDataClient(okHttpClient, objectMapper);
     }
 
-    public ReferenceSymbolsClient symbols() {
-        return referenceSymbolsClient;
+    public ReferenceDataClient referenceData() {
+        return referenceDataClient;
     }
 
 }

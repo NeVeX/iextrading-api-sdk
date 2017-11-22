@@ -1,7 +1,7 @@
 package com.nevex.iextrading;
 
 /**
- * Created by Mark Cunningham on 11/21/2017.
+ * Created by NeVeX on 11/21/2017.
  */
 public class IEXTradingClientException extends Exception {
 

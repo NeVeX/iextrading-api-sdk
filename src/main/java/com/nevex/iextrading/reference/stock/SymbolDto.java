@@ -9,7 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import java.time.LocalDate;
 
 /**
- * Created by Mark Cunningham on 11/21/2017.
+ * Created by NeVeX on 11/21/2017.
  */
 final class SymbolDto {
 

@@ -3,22 +3,21 @@ package com.nevex.iextrading.reference.stock;
 import com.nevex.iextrading.IEXTradingClient;
 import org.junit.Test;
 
-import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-
 /**
- * Created by Mark Cunningham on 11/21/2017.
+ * Created by NeVeX on 11/21/2017.
  */
-public class ReferenceSymbolsClientTest {
+public class ReferenceDataClientTest {
 
     @Test
     public void makeSureCanGetSymbols() throws Exception {
 
         IEXTradingClient client = new IEXTradingClient();
-        List<Symbol> symbols = client.symbols().getAllSymbols();
+        Set<Symbol> symbols = client.referenceData().getAllSymbols();
 
         assertNotNull(symbols);
         assertFalse(symbols.isEmpty());

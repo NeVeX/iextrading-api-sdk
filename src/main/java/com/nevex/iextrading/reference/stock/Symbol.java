@@ -5,9 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.LocalDate;
 
 /**
- * Created by Mark Cunningham on 11/21/2017.
+ * Created by NeVeX on 11/21/2017.
  */
-public final class Symbol {
+public final class Symbol implements Comparable<Symbol> {
 
     private final String symbol;
     private final String name;
@@ -46,6 +46,11 @@ public final class Symbol {
     }
 
     public static Builder builder() { return new Builder(); }
+
+    @Override
+    public int compareTo(Symbol other) {
+        return StringUtils.compareIgnoreCase(symbol, other.getSymbol());
+    }
 
     public static class Builder {
 
