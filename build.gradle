@@ -1,0 +1,33 @@
+group 'com.nevexcomputing'
+version '1.0.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.2'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.2'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: '2.9.2'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.2'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.9.1'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+}
