@@ -1,4 +1,4 @@
-package com.nevex.iextrading.reference.stock;
+package com.nevex.iextrading.reference.symbol;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;

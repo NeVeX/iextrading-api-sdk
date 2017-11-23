@@ -1,8 +1,9 @@
-package com.nevex.iextrading.reference.stock;
+package com.nevex.iextrading.reference.symbol;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Created by NeVeX on 11/21/2017.
@@ -50,6 +51,19 @@ public final class Symbol implements Comparable<Symbol> {
     @Override
     public int compareTo(Symbol other) {
         return StringUtils.compareIgnoreCase(symbol, other.getSymbol());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Symbol symbol1 = (Symbol) o;
+        return StringUtils.equalsIgnoreCase(symbol, symbol1.symbol);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(symbol);
     }
 
     public static class Builder {

@@ -5,6 +5,10 @@ package com.nevex.iextrading;
  */
 public class IEXTradingClientException extends Exception {
 
+    public IEXTradingClientException(String message) {
+        super(message);
+    }
+
     public IEXTradingClientException(Exception e) {
         super(e);
     }

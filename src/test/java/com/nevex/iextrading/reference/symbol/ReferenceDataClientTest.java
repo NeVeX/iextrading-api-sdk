@@ -1,4 +1,4 @@
-package com.nevex.iextrading.reference.stock;
+package com.nevex.iextrading.reference.symbol;
 
 import com.nevex.iextrading.IEXTradingClient;
 import org.junit.Test;
