@@ -18,8 +18,8 @@ public class StockQuoteClientTest {
     @Test
     public void makeSureCanGetStockQuote() throws Exception {
 
-        IEXTradingClient client = new IEXTradingClient();
-        Optional<Quote> appleQuoteOpt = client.quotes().withZoneOffset(ZoneOffset.ofHours(-8)).getQuote("aapl");
+        IEXTradingClient client = IEXTradingClient.builder().build();
+        Optional<Quote> appleQuoteOpt = client.quotes().getQuote("aapl");
         assertNotNull(appleQuoteOpt);
         assertTrue(appleQuoteOpt.isPresent());
 
@@ -30,7 +30,12 @@ public class StockQuoteClientTest {
 
     @Test
     public void makeSureNonExistingStockReturnsEmpty() throws Exception {
-        assertFalse(new IEXTradingClient().quotes().getQuote("i_do_not_exist").isPresent());
+        assertFalse(IEXTradingClient.builder().build().quotes().getQuote("i_do_not_exist").isPresent());
     }
 
+    @Test
+    public void makeSureCanChangeTimeZone() throws Exception {
+        IEXTradingClient client = IEXTradingClient.builder().withZoneOffset(ZoneOffset.ofHours(-5)).build();
+        assertNotNull(client.quotes().getQuote("msft"));
+    }
 }

@@ -16,7 +16,7 @@ public class ReferenceDataClientTest {
     @Test
     public void makeSureCanGetSymbols() throws Exception {
 
-        IEXTradingClient client = new IEXTradingClient();
+        IEXTradingClient client = IEXTradingClient.builder().build();
         Set<Symbol> symbols = client.referenceData().getAllSymbols();
 
         assertNotNull(symbols);

@@ -20,16 +20,12 @@ public abstract class AbstractClient {
     private final OkHttpClient client;
     private final ObjectMapper objectMapper;
 
-    protected ZoneOffset zoneOffset = ZoneOffset.UTC;
+    protected final ZoneOffset zoneOffset;
 
-    /**
-     * Set a zoneoffset when needed to convert to/from dates with timezone needs
-     */
-    protected abstract AbstractClient withZoneOffset(ZoneOffset zoneOffset);
-
-    protected AbstractClient(OkHttpClient client, ObjectMapper objectMapper) {
-        this.client = client;
-        this.objectMapper = objectMapper;
+    protected AbstractClient(IEXTradingClient.Config config) {
+        this.client = config.getOkHttpClient();
+        this.objectMapper = config.getObjectMapper();
+        this.zoneOffset = config.getZoneOffset();
     }
 
     private Response execute(Request request) throws IEXTradingClientException {
@@ -73,10 +69,6 @@ public abstract class AbstractClient {
             return new ArrayList<>();
         }
         return dataList;
-    }
-
-    protected synchronized void changeZoneOffset(ZoneOffset zoneOffset) {
-        this.zoneOffset = zoneOffset;
     }
 
 }

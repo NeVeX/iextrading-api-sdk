@@ -2,8 +2,8 @@ package com.nevex.iextrading.stock.quote;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nevex.iextrading.AbstractClient;
+import com.nevex.iextrading.IEXTradingClient;
 import com.nevex.iextrading.IEXTradingClientException;
-import com.nevex.iextrading.reference.symbol.ReferenceDataClient;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -11,9 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.ZoneOffset;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by NeVeX on 11/22/2017.
@@ -23,18 +21,11 @@ public class StockQuoteClient extends AbstractClient {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockQuoteClient.class);
     private final static String URL = BASE_URL + "/stock";
     private final Request.Builder quoteRequestBuilder;
+    private final boolean usePercentageDisplay;
 
-    private AtomicBoolean usePercentageDisplay = new AtomicBoolean(false);
-
-    @Override
-    protected StockQuoteClient withZoneOffset(ZoneOffset zoneOffset) {
-        super.changeZoneOffset(zoneOffset);
-        return this;
-    }
-
-    public StockQuoteClient(OkHttpClient client, ObjectMapper objectMapper) {
-        super(client, objectMapper);
-        // aapl/quote
+    private StockQuoteClient(IEXTradingClient.Config config, Builder builder) {
+        super(config);
+        this.usePercentageDisplay = builder.usePercentageDisplay;
         quoteRequestBuilder = new Request.Builder().header("Accept", "application/json").get();
     }
 
@@ -60,16 +51,62 @@ public class StockQuoteClient extends AbstractClient {
                 .newBuilder()
                 .addPathSegment(symbol)
                 .addPathSegment("quote")
-                .addQueryParameter("displayPercent", Boolean.toString(usePercentageDisplay.get()))
+                .addQueryParameter("displayPercent", Boolean.toString(usePercentageDisplay))
                 .build();
     }
 
-    /**
-     * Multiplies all percent values by a factor of 100.
-     * <br>Default is false
-     */
-    public StockQuoteClient withPercentageDisplay(boolean percentageDisplayEnabled) {
-        usePercentageDisplay.set(percentageDisplayEnabled);
-        return this;
+    public static BuilderWithParent builder(IEXTradingClient.Builder parentBuilder) { return new BuilderWithParent(parentBuilder); }
+
+    public static Builder builder() { return new BuilderWithoutParent(); }
+
+    public static abstract class Builder<B extends Builder> {
+        private boolean usePercentageDisplay = false;
+        protected abstract B getImplementingBuilder();
+
+        /**
+         * Multiplies all percent values by a factor of 100.
+         * <br>Default is false
+         */
+        public B withPercentageDisplay(boolean usePercentageDisplay) {
+            this.usePercentageDisplay = usePercentageDisplay;
+            return getImplementingBuilder();
+        }
+
+        public StockQuoteClient build(IEXTradingClient.Config config) {
+            return new StockQuoteClient(config, this);
+        }
     }
+
+    public static class BuilderWithoutParent extends Builder<BuilderWithoutParent> {
+
+        @Override
+        protected BuilderWithoutParent getImplementingBuilder() {
+            return this;
+        }
+    }
+
+    /**
+     * Wrapper to the builder class with a link back to the parent - useful for complex chain building
+     */
+    public static class BuilderWithParent extends Builder<BuilderWithParent> {
+        private final IEXTradingClient.Builder parentBuilder;
+
+        private BuilderWithParent(IEXTradingClient.Builder parentBuilder) {
+            this.parentBuilder = parentBuilder;
+        }
+
+        /**
+         * Convenience method to get to the parent builder when chaining builders together
+         * <br>Note, this does not build the client yet
+         */
+        public IEXTradingClient.Builder done() {
+            return parentBuilder;
+        }
+
+        @Override
+        protected BuilderWithParent getImplementingBuilder() {
+            return this;
+        }
+    }
+
 }

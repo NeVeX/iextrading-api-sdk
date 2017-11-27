@@ -474,6 +474,7 @@ public final class Quote implements Comparable<Quote> {
         }
 
         public Builder withIexLastUpdated(Long iexLastUpdatedMs) {
+            // TODO: This can be null
             this.iexLastUpdated = Instant.ofEpochMilli(iexLastUpdatedMs).atOffset(zoneOffset);
             return this;
         }

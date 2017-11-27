@@ -42,11 +42,11 @@ public final class Symbol implements Comparable<Symbol> {
         return enabled;
     }
 
-    public static Symbol fromDto(SymbolDto dto) {
+    static Symbol fromDto(SymbolDto dto) {
         return builder().withDto(dto).build();
     }
 
-    public static Builder builder() { return new Builder(); }
+    static Builder builder() { return new Builder(); }
 
     @Override
     public int compareTo(Symbol other) {
@@ -66,7 +66,7 @@ public final class Symbol implements Comparable<Symbol> {
         return Objects.hash(symbol);
     }
 
-    public static class Builder {
+    private static class Builder {
 
         private String symbol;
         private String name;
@@ -75,7 +75,7 @@ public final class Symbol implements Comparable<Symbol> {
 
         private Builder() { }
 
-        public Builder withDto(SymbolDto dto) {
+        Builder withDto(SymbolDto dto) {
             symbol = dto.getSymbol();
             name = dto.getName();
             date = dto.getDate();

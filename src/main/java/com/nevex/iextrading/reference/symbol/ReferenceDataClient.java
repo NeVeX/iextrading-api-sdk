@@ -3,13 +3,13 @@ package com.nevex.iextrading.reference.symbol;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nevex.iextrading.AbstractClient;
+import com.nevex.iextrading.IEXTradingClient;
 import com.nevex.iextrading.IEXTradingClientException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -22,14 +22,8 @@ public final class ReferenceDataClient extends AbstractClient {
     private final static Logger LOGGER = LoggerFactory.getLogger(ReferenceDataClient.class);
     private final Request symbolsRequest;
 
-    @Override
-    protected ReferenceDataClient withZoneOffset(ZoneOffset zoneOffset) {
-        super.changeZoneOffset(zoneOffset);
-        return this;
-    }
-
-    public ReferenceDataClient(OkHttpClient client, ObjectMapper objectMapper) {
-        super(client, objectMapper);
+    public ReferenceDataClient(IEXTradingClient.Config config) {
+        super(config);
         this.symbolsRequest = new Request.Builder().url(BASE_URL + "/ref-data/symbols").header("Accept", "application/json").get().build();
     }
 
